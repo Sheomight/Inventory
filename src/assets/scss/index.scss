@@ -4,4 +4,26 @@
 
 body {
   background-color: var(--color-dark);
+  font-family: var(--font-primary);
+}
+
+.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }

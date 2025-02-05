@@ -4,9 +4,12 @@ import { computed } from 'vue';
 interface ISkeletonLoadingProps {
   type: 'text' | 'block'
   lines?: number
+  blockRounding?: 'default' | 'large'
 }
 
-const props = defineProps<ISkeletonLoadingProps>();
+const props = withDefaults(defineProps<ISkeletonLoadingProps>(), {
+  blockRounding: 'default'
+});
 
 const lines = computed(() => props.lines || 1)
 </script>
@@ -14,13 +17,13 @@ const lines = computed(() => props.lines || 1)
 <template>
   <div
     class="skeleton"
-    :class="[`skeleton_${props.type}`]"
+    :class="[`skeleton_${props.type}`, `skeleton_${props.blockRounding}`]"
   >
     <template v-if="type === 'text'">
       <div
         v-for="(_, index) in lines"
         :key="index"
-        class="skeleton__line"
+        class="skeleton__line flex flex-col"
       ></div>
     </template>
   </div>
@@ -34,23 +37,28 @@ $b: '.skeleton';
   width: 100%;
   height: 100%;
 
+  &_default#{$b}_block {
+    border-radius: 8px;
+  }
+
+  &_large#{$b}_block {
+    border-radius: 12px;
+  }
+
   &_text {
-    display: flex;
-    flex-direction: column;
     row-gap: 16px;
   }
 
   &_block {
     background: var(--skeleton-gradient);
     background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 8px;
+    animation: shimmer 2s infinite;
   }
 
   &__line {
     background: var(--skeleton-gradient);
     background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
+    animation: shimmer 2s infinite;
     border-radius: 4px;
     width: 100%;
     height: 10px;

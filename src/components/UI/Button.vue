@@ -10,18 +10,13 @@ const props = withDefaults(defineProps<IButtonProps>(), {
 </script>
 
 <template>
-    <button
+  <button
     class="button flex align-center justify-center clickable"
-    :class="[
-      `button_color-${props.color}`,
-    ]"
+    :class="[`button_color-${props.color}`]"
   >
-      <div
-        v-if="props.label"
-        class="button__label flex align-center text-semi-bold"
-      >
-        <span>{{ props.label }}</span>
-      </div>
+    <div v-if="props.label" class="button__label flex align-center text-semi-bold">
+      <span>{{ props.label }}</span>
+    </div>
   </button>
 </template>
 
@@ -31,7 +26,7 @@ $b: '.button';
 #{$b} {
   height: fit-content;
   width: var(--button-width, fit-content);
-  border-radius: 8px;
+  border-radius: var(--border-radius-default);
   padding-block: 8px;
   padding-inline: 28px;
   font-family: var(--font-secondary);

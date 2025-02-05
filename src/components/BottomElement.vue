@@ -23,7 +23,7 @@ $b: '.bottom-element';
   padding: 8px;
   border: var(--border);
   background-color: var(--color-gray-1);
-  border-radius: 12px;
+  border-radius: var(--border-radius-large);
 
   &__content {
     flex-grow: 1;

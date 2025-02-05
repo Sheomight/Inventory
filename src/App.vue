@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import BottomElement from './components/BottomElement.vue';
-
+import LeftElement from './components/LeftElement.vue'
 </script>
 
 <template>
   <div class="main">
-    <BottomElement />
+    <LeftElement />
   </div>
 </template>
 
 <style lang="scss" scoped>
-$b: ".main";
+$b: '.main';
 
 #{$b} {
   margin: 200px 150px;
-  height: 300px;
+  height: 800px;
 }
 </style>

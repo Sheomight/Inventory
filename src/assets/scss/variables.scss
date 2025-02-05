@@ -1,21 +1,30 @@
 :root {
-  --color-dark: #1D1D1D;
-  --color-light: #FFFFFF;
-  
+  --color-dark: #1d1d1d;
+  --color-light: #ffffff;
+
   --color-gray-1: #262626;
-  --color-gray-2: #2D2D2D;
-  --color-gray-3: #4D4D4D;
+  --color-gray-2: #2d2d2d;
+  --color-gray-3: #4d4d4d;
 
-  --color-green: #7FAA65;
-  --color-yellow: #AA9765;
-  --color-blue: #656CAA;
+  --color-green: #7faa65;
+  --color-yellow: #aa9765;
+  --color-blue: #656caa;
 
-  --color-warn: #FA7272;
+  --color-warn: #fa7272;
 
-  --skeleton-gradient: linear-gradient(90.00deg, rgb(60, 60, 60),rgb(68, 68, 68) 51.042%,rgb(51, 51, 51) 100%);
-  
+  --skeleton-gradient: linear-gradient(
+    90deg,
+    rgb(60, 60, 60),
+    rgb(68, 68, 68) 51.042%,
+    rgb(51, 51, 51) 100%
+  );
+
   --font-primary: Inter, 'serif';
   --font-secondary: 'SF Pro Display', 'serif';
 
   --border: 1px solid var(--color-gray-3);
+
+  --border-radius-small: 4px;
+  --border-radius-default: 8px;
+  --border-radius-large: 12px;
 }

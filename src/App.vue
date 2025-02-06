@@ -6,9 +6,11 @@ import LeftElement from './components/LeftElement.vue'
 
 <template>
   <div class="main">
-    <LeftElement class="main__left" />
-    <Inventory class="main__inventory" />
-    <BottomElement class="main__bottom" />
+    <div class="main__element">
+      <LeftElement class="main__element-left" />
+      <Inventory class="main__element-inventory" />
+      <BottomElement class="main__element-bottom" />
+    </div>
   </div>
 </template>
 
@@ -16,21 +18,28 @@ import LeftElement from './components/LeftElement.vue'
 $b: '.main';
 
 #{$b} {
-  display: grid;
-  justify-content: start;
-  grid-template-areas: 'left-element main-element' 'bottom-element bottom-element';
-  gap: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 
-  &__left {
-    grid-area: left-element;
-  }
+  &__element {
+    display: grid;
+    justify-content: start;
+    grid-template-areas: 'left-element main__element' 'bottom-element bottom-element';
+    gap: 24px;
 
-  &__inventory {
-    grid-area: main-element;
-  }
+    &-left {
+      grid-area: left-element;
+    }
 
-  &__bottom {
-    grid-area: bottom-element;
+    &-inventory {
+      grid-area: main__element;
+    }
+
+    &-bottom {
+      grid-area: bottom-element;
+    }
   }
 }
 </style>

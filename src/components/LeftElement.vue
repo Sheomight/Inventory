@@ -10,7 +10,7 @@ import SkeletonLoading from './UI/SkeletonLoading.vue'
     <div class="left-element__title">
       <SkeletonLoading type="block" />
     </div>
-    <div class="left-element__text">
+    <div class="left-element__text full-w">
       <SkeletonLoading
         type="text"
         :lines="5"
@@ -51,7 +51,6 @@ $b: '.left-element';
 
   &__text {
     margin-top: 24px;
-    width: 100%;
   }
 
   &__action {

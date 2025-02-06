@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useItemsStore } from '../store/items.ts'
 import type { IItem } from '../store/items.ts'
@@ -14,15 +14,73 @@ const inventoryEl = ref(null)
 const infoModal = ref(false)
 const itemToShow = ref<IItem | null>(null)
 const movingItemId = ref<string | null>(null)
+const draggingItem = ref<HTMLElement | null>(null)
+const isDragging = ref(false)
 
 const showItem = (item: IItem) => {
   infoModal.value = true
   itemToShow.value = item
 }
+
+const handleClose = () => {
+  infoModal.value = false
+  itemToShow.value = null
+}
+
+const itemSize = ref({ width: 0, height: 0 })
+
+const onMouseMove = (event: MouseEvent) => {
+  if (!isDragging.value || !draggingItem.value) return
+  draggingItem.value.style.left = `${event.clientX - itemSize.value.width / 2}px`
+  draggingItem.value.style.top = `${event.clientY - itemSize.value.height / 2}px`
+}
+
+const onMouseUp = (row?: number, cell?: number) => {
+  if (movingItemId.value && row && cell) {
+    setItemPosition(movingItemId.value, row, cell)
+  }
+
+  isDragging.value = false
+  movingItemId.value = null
+
+  if (draggingItem.value) {
+    draggingItem.value.remove()
+    draggingItem.value = null
+  }
+}
+
+const onMouseDown = (event: MouseEvent, item: IItem) => {
+  movingItemId.value = item.id
+  isDragging.value = true
+
+  const currentTarget = event.currentTarget as HTMLElement
+
+  const clonedItem = currentTarget.cloneNode(true) as HTMLElement
+  const rect = currentTarget.getBoundingClientRect()
+  itemSize.value = { width: rect.width / 1.5, height: rect.height / 1.5 }
+
+  clonedItem.style.width = `${itemSize.value.width}px`
+  clonedItem.style.height = `${itemSize.value.height}px`
+  clonedItem.style.zIndex = '1000'
+  clonedItem.style.left = `${event.clientX - itemSize.value.width / 2}px`
+  clonedItem.style.top = `${event.clientY - itemSize.value.height / 2}px`
+  clonedItem.classList.add('dragging-item')
+
+  document.body.appendChild(clonedItem)
+  draggingItem.value = clonedItem
+}
+
+onMounted(() => {
+  document.addEventListener('mousemove', onMouseMove)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('mousemove', onMouseMove)
+})
 </script>
 
 <template>
-  <div ref="inventoryEl" class="inventory">
+  <div ref="inventoryEl" class="inventory" @mouseleave="onMouseUp()" @click="handleClose">
     <div class="inventory__content">
       <div
         v-for="(row, rowIndex) in inventorySize.height"
@@ -33,21 +91,14 @@ const showItem = (item: IItem) => {
           v-for="(cell, cellIndex) in inventorySize.width"
           :key="cellIndex"
           class="inventory__cell"
-          @mouseup="
-            () => {
-              if (movingItemId) {
-                setItemPosition(movingItemId, row, cell)
-              }
-              movingItemId = null
-            }
-          "
+          @mouseup="onMouseUp(row, cell)"
         >
           <InventoryItem
             v-if="itemsMap[`${row}-${cell}`]"
             :key="itemsMap[`${row}-${cell}`].id"
             :color="itemsMap[`${row}-${cell}`].color"
             :quantity="itemsMap[`${row}-${cell}`].quantity"
-            @mousedown.stop="movingItemId = itemsMap[`${row}-${cell}`].id"
+            @mousedown.stop="(event) => onMouseDown(event, itemsMap[`${row}-${cell}`])"
             @click.stop="!itemToShow && showItem(itemsMap[`${row}-${cell}`])"
           />
         </div>
@@ -59,7 +110,7 @@ const showItem = (item: IItem) => {
     v-model="infoModal"
     :item="itemToShow"
     :teleport="inventoryEl"
-    @close="itemToShow = null"
+    @close="handleClose"
   />
 </template>
 
@@ -93,5 +144,13 @@ $b: '.inventory';
     height: 100px;
     --inventory-item-padding: 25px;
   }
+}
+
+.dragging-item {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.8;
+  transition: transform 0.1s linear;
+  --item-counter-display: none;
 }
 </style>

@@ -38,14 +38,14 @@ const onBlur = () => {
 </script>
 
 <template>
-  <div class="input" :class="[getCustomClasses]">
+  <div class="input full-w" :class="[getCustomClasses]">
     <div v-if="props.label" class="input__label absolute text-secondary" @click="inputEl?.focus()">
       <span>{{ props.label }}</span>
     </div>
     <input
       ref="inputEl"
       v-model.trim="model"
-      class="input__field"
+      class="input__field full-w"
       :type="props.type"
       @focus="onFocus"
       @blur="onBlur"
@@ -55,7 +55,6 @@ const onBlur = () => {
 
 <style lang="scss" scoped>
 .input {
-  width: 100%;
   position: relative;
 
   &__label {
@@ -66,7 +65,6 @@ const onBlur = () => {
   }
 
   &__field {
-    width: 100%;
     border: var(--border);
     border-radius: var(--border-radius-small);
     padding: 11px;

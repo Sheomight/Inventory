@@ -9,10 +9,10 @@ const props = defineProps<IInventoryItemProps>()
 
 <template>
   <div
-    class="inventory-item flex align-center justify-center"
+    class="inventory-item flex align-center justify-center full-w full-h"
     :class="[`inventory-item_${props.color}`]"
   >
-    <div class="inventory-item__image" />
+    <div class="inventory-item__image full-w full-h" />
     <div v-if="props.quantity" class="inventory-item__counter">{{ props.quantity }}</div>
   </div>
 </template>
@@ -21,16 +21,12 @@ const props = defineProps<IInventoryItemProps>()
 $b: '.inventory-item';
 
 #{$b} {
-  width: 100%;
-  height: 100%;
   position: relative;
   cursor: pointer;
   padding: var(--inventory-item-padding, 0);
 
   &__image {
     position: relative;
-    width: 100%;
-    height: 100%;
 
     &::before {
       position: absolute;
@@ -84,6 +80,7 @@ $b: '.inventory-item';
   }
 
   &__counter {
+    display: var(--item-counter-display, block);
     position: absolute;
     right: 0;
     bottom: 0;

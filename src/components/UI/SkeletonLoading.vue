@@ -17,7 +17,7 @@ const lines = computed(() => props.lines || 1)
 
 <template>
   <div
-    class="skeleton"
+    class="skeleton full-w full-h"
     :class="[
       `skeleton_${props.type}`,
       `skeleton_${props.blockRounding}`,
@@ -30,7 +30,7 @@ const lines = computed(() => props.lines || 1)
       <div
         v-for="(_, index) in lines"
         :key="index"
-        class="skeleton__line"
+        class="skeleton__line full-w"
         :style="{
           width: props.linesWidths?.[index] ? props.linesWidths[index] : '100%'
         }"
@@ -44,8 +44,6 @@ $b: '.skeleton';
 
 #{$b} {
   overflow: hidden;
-  width: 100%;
-  height: 100%;
 
   &_default#{$b}_block {
     border-radius: var(--border-radius-default);
@@ -71,7 +69,6 @@ $b: '.skeleton';
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
     border-radius: var(--border-radius-small);
-    width: 100%;
     height: 10px;
   }
 }

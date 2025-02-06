@@ -54,7 +54,7 @@ const handleDelete = () => {
         <div class="item-modal__img">
           <InventoryItem :color="props.item.color" />
         </div>
-        <div class="item-modal__info">
+        <div class="item-modal__info full-w">
           <div class="item-modal__info-title">
             <SkeletonLoading type="block" />
           </div>
@@ -69,7 +69,7 @@ const handleDelete = () => {
       </div>
     </template>
     <template #actions>
-      <div v-if="!isDeleting" class="item-modal__actions flex align-center">
+      <div v-if="!isDeleting" class="item-modal__actions full-w flex align-center">
         <Button
           class="item-modal__actions-btn_full"
           label="Удалить предмет"
@@ -109,7 +109,6 @@ $b: '.item-modal';
   }
 
   &__info {
-    width: 100%;
     border-top: var(--border);
     padding-top: 16px;
     margin-top: 30px;
@@ -125,7 +124,6 @@ $b: '.item-modal';
 
   &__actions {
     padding-top: 18px;
-    width: 100%;
     border-top: var(--border);
 
     &_upper {

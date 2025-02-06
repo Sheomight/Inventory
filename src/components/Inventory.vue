@@ -31,6 +31,7 @@ const itemSize = ref({ width: 0, height: 0 })
 
 const onMouseMove = (event: MouseEvent) => {
   if (!isDragging.value || !draggingItem.value) return
+  if (draggingItem.value.style.opacity === '0') draggingItem.value.style.opacity = '0.8'
   draggingItem.value.style.left = `${event.clientX - itemSize.value.width / 2}px`
   draggingItem.value.style.top = `${event.clientY - itemSize.value.height / 2}px`
 }
@@ -39,6 +40,8 @@ const onMouseUp = (row?: number, cell?: number) => {
   if (movingItemId.value && row && cell) {
     setItemPosition(movingItemId.value, row, cell)
   }
+
+  document.body.style.cursor = ''
 
   isDragging.value = false
   movingItemId.value = null
@@ -53,6 +56,8 @@ const onMouseDown = (event: MouseEvent, item: IItem) => {
   movingItemId.value = item.id
   isDragging.value = true
 
+  document.body.style.cursor = 'grabbing'
+
   const currentTarget = event.currentTarget as HTMLElement
 
   const clonedItem = currentTarget.cloneNode(true) as HTMLElement
@@ -62,6 +67,7 @@ const onMouseDown = (event: MouseEvent, item: IItem) => {
   clonedItem.style.width = `${itemSize.value.width}px`
   clonedItem.style.height = `${itemSize.value.height}px`
   clonedItem.style.zIndex = '1000'
+  clonedItem.style.opacity = '0'
   clonedItem.style.left = `${event.clientX - itemSize.value.width / 2}px`
   clonedItem.style.top = `${event.clientY - itemSize.value.height / 2}px`
   clonedItem.classList.add('dragging-item')
@@ -98,7 +104,9 @@ onBeforeUnmount(() => {
             :key="itemsMap[`${row}-${cell}`].id"
             :color="itemsMap[`${row}-${cell}`].color"
             :quantity="itemsMap[`${row}-${cell}`].quantity"
-            @mousedown.stop="(event) => onMouseDown(event, itemsMap[`${row}-${cell}`])"
+            @mousedown.stop="
+              (event) => !infoModal && onMouseDown(event, itemsMap[`${row}-${cell}`])
+            "
             @click.stop="!itemToShow && showItem(itemsMap[`${row}-${cell}`])"
           />
         </div>
@@ -149,7 +157,6 @@ $b: '.inventory';
 .dragging-item {
   position: absolute;
   pointer-events: none;
-  opacity: 0.8;
   transition: transform 0.1s linear;
   --item-counter-display: none;
 }

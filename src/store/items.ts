@@ -12,12 +12,14 @@ export interface IItem {
   }
 }
 
+const STORAGE_KEY = 'items'
+
 export const useItemsStore = defineStore('items', () => {
   const { getUUID } = useUUID()
 
-  const itemsFromStorage = ref(localStorage.getItem('items'))
+  const itemsFromStorage = ref<IItem[]>(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
 
-  const defaultItems = ref<Array<IItem>>([
+  const defaultItems: IItem[] = [
     {
       id: getUUID(),
       color: 'blue',
@@ -54,16 +56,14 @@ export const useItemsStore = defineStore('items', () => {
         cell: 4
       }
     }
-  ])
+  ]
 
-  const getItems = computed<Array<IItem>>(() => {
-    if (itemsFromStorage.value === null) {
-      localStorage.setItem('items', JSON.stringify(defaultItems.value))
-      itemsFromStorage.value = localStorage.getItem('items')
-    }
+  if (!itemsFromStorage.value.length) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultItems))
+    itemsFromStorage.value = defaultItems
+  }
 
-    return JSON.parse(itemsFromStorage.value ?? '[]')
-  })
+  const getItems = computed<IItem[]>(() => itemsFromStorage.value)
 
   const itemsMap = computed(() => {
     const map: Record<string, IItem> = {}
@@ -74,38 +74,31 @@ export const useItemsStore = defineStore('items', () => {
     return map
   })
 
-  const setItems = (items: Array<IItem>) => {
-    localStorage.setItem('items', JSON.stringify(items))
-    itemsFromStorage.value = localStorage.getItem('items')
+  const setItems = (items: IItem[]) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+    itemsFromStorage.value = items
   }
 
   const deleteItem = (itemId: string, quantity: number | null) => {
-    const currentItemIndex = getItems.value.findIndex((item) => item.id === itemId)
-    if (getItems.value[currentItemIndex]?.quantity === quantity) {
-      setItems(getItems.value.filter((item) => item.id !== itemId))
-    } else {
-      setItems(
-        getItems.value.map((item, index) => {
-          if (index === currentItemIndex && quantity !== null) {
-            item.quantity -= quantity
-          }
-          return item
-        })
-      )
-    }
+    const updatedItems = getItems.value
+      .map((item) => {
+        if (item.id === itemId && quantity !== null) {
+          item.quantity -= quantity
+        }
+        return item
+      })
+      .filter((item) => item.quantity > 0)
+
+    setItems(updatedItems)
   }
 
   const setItemPosition = (itemId: string, row: number, cell: number) => {
-    if (!itemsMap.value[`${row}-${cell}`]) {
-      setItems(
-        getItems.value.map((item) => {
-          if (itemId === item.id) {
-            item.position.row = row
-            item.position.cell = cell
-          }
-          return item
-        })
+    const key = `${row}-${cell}`
+    if (!itemsMap.value[key]) {
+      const updatedItems = getItems.value.map((item) =>
+        item.id === itemId ? { ...item, position: { row, cell } } : item
       )
+      setItems(updatedItems)
     }
   }
 

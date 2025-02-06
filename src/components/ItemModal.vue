@@ -9,7 +9,7 @@ import SlideModal from './UI/SlideModal.vue'
 
 interface IItemModalProps {
   item: IItem | null
-  teleport: HTMLDivElement
+  teleport: HTMLElement
 }
 
 interface IItemModalEmits {
@@ -26,7 +26,7 @@ const isDeleting = ref(false)
 const deletingCount = ref<number | null>(null)
 
 const hasError = computed(() => {
-  if (props.item?.quantity && deletingCount.value !== null) {
+  if (props.item?.quantity && deletingCount.value) {
     return deletingCount.value > props.item?.quantity
   }
   return false
@@ -90,7 +90,7 @@ const handleDelete = () => {
           class="flex-grow"
           label="Подтвердить"
           color="warn"
-          :disabled="hasError"
+          :disabled="hasError || !deletingCount"
           @click="handleDelete"
         />
       </div>
@@ -128,9 +128,9 @@ $b: '.item-modal';
 
     &_upper {
       padding-top: 20px;
-      position: relative;
       column-gap: 10px;
       row-gap: 20px;
+      border-top: var(--border);
     }
 
     &-btn_full {

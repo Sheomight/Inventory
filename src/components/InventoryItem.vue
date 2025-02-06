@@ -9,7 +9,7 @@ const props = defineProps<IInventoryItemProps>()
 
 <template>
   <div
-    class="inventory-item flex align-center justify-center full-w full-h"
+    class="inventory-item flex align-center justify-center full-w full-h clickable"
     :class="[`inventory-item_${props.color}`]"
   >
     <div class="inventory-item__image full-w full-h" />
@@ -22,7 +22,6 @@ $b: '.inventory-item';
 
 #{$b} {
   position: relative;
-  cursor: pointer;
   padding: var(--inventory-item-padding, 0);
 
   &__image {
@@ -80,7 +79,6 @@ $b: '.inventory-item';
   }
 
   &__counter {
-    display: var(--item-counter-display, block);
     position: absolute;
     right: 0;
     bottom: 0;

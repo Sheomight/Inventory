@@ -51,6 +51,11 @@ $b: '.button';
     background: var(--color-warn);
   }
 
+  &:not(#{$b}_disabled):hover,
+  &:not(#{$b}_disabled):active {
+    opacity: 0.8;
+  }
+
   &_disabled {
     opacity: 0.4;
   }

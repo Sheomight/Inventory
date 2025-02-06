@@ -20,22 +20,23 @@ import SkeletonLoading from './UI/SkeletonLoading.vue'
 $b: '.bottom-element';
 
 #{$b} {
-  padding: 8px;
+  position: relative;
+  padding: 18px;
   border: var(--border);
   background-color: var(--color-gray-1);
   border-radius: var(--border-radius-large);
 
   &__content {
-    flex-grow: 1;
-    padding-block: 10px;
-    padding-left: 10px;
+    width: 90%;
   }
 
   &__close-btn {
-    flex-shrink: 0;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    transform: translate(-50% -50%);
     color: var(--color-light);
     align-self: flex-start;
-    margin-left: 36px;
     padding: 6px;
   }
 

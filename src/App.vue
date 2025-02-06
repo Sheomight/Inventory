@@ -5,7 +5,7 @@ import LeftElement from './components/LeftElement.vue'
 </script>
 
 <template>
-  <div class="main">
+  <div class="main flex align-center justify-center">
     <div class="main__element">
       <LeftElement class="main__element-left" />
       <Inventory class="main__element-inventory" />
@@ -18,9 +18,6 @@ import LeftElement from './components/LeftElement.vue'
 $b: '.main';
 
 #{$b} {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 
   &__element {

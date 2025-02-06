@@ -3,7 +3,7 @@ import Close from '../icons/Close.vue'
 
 interface ISlideUpModalProps {
   zIndex?: number
-  teleport: HTMLDivElement
+  teleport: HTMLElement
 }
 
 interface ISlideUpModalEmits {
@@ -30,14 +30,14 @@ const close = () => {
       <div
         v-if="visible"
         :style="{ zIndex: props.zIndex }"
-        class="caf-slide-modal flex flex-col justify-center align-center overflow-hidden"
+        class="slide-modal flex flex-col justify-center align-center overflow-hidden full-h"
       >
-        <div class="caf-slide-modal__wrapper flex flex-col p-20" @click.stop>
+        <div class="slide-modal__wrapper full-h flex flex-col p-20" @click.stop>
           <div
-            class="caf-slide-modal__header pb-20 flex flex-shrink-0 align-center full-w overflow-hidden"
+            class="slide-modal__header pb-20 flex flex-shrink-0 align-center full-w overflow-hidden"
           >
             <div
-              class="caf-slide-modal__close flex align-center flex-shrink-0 clickable"
+              class="slide-modal__close flex align-center flex-shrink-0 clickable"
               @click="close"
             >
               <Close />
@@ -45,14 +45,11 @@ const close = () => {
           </div>
           <div
             v-if="visible"
-            class="caf-slide-modal__body flex flex-col overflow-y-auto overflow-x-hidden hide-scroll"
+            class="slide-modal__body flex flex-col overflow-y-auto overflow-x-hidden hide-scroll"
           >
             <slot />
           </div>
-          <div
-            v-if="visible"
-            class="caf-slide-modal__actions flex overflow-y-auto overflow-x-hidden"
-          >
+          <div v-if="visible" class="slide-modal__actions flex overflow-y-auto overflow-x-hidden">
             <slot name="actions" />
           </div>
         </div>
@@ -62,11 +59,10 @@ const close = () => {
 </template>
 
 <style lang="scss" scoped>
-$b: '.caf-slide-modal';
+$b: '.slide-modal';
 
 #{$b} {
   width: fit-content;
-  height: 100%;
   position: absolute;
   top: 0;
   right: 0;
@@ -78,7 +74,6 @@ $b: '.caf-slide-modal';
 
   &__wrapper {
     width: 250px;
-    height: 100%;
     padding-top: 32px;
     padding-bottom: 18px;
   }

@@ -74,9 +74,34 @@ export const useItemsStore = defineStore('items', () => {
     return map
   })
 
+  const deleteItem = (itemId: string, quantity: number | null) => {
+    const currentItemIndex = getItems.value.findIndex((item) => item.id === itemId)
+    if (getItems.value[currentItemIndex]?.quantity === quantity) {
+      localStorage.setItem(
+        'items',
+        JSON.stringify(getItems.value.filter((item) => item.id !== itemId))
+      )
+      itemsFromStorage.value = localStorage.getItem('items')
+    } else {
+      localStorage.setItem(
+        'items',
+        JSON.stringify(
+          getItems.value.map((item, index) => {
+            if (index === currentItemIndex && quantity !== null) {
+              item.quantity -= quantity
+            }
+            return item
+          })
+        )
+      )
+      itemsFromStorage.value = localStorage.getItem('items')
+    }
+  }
+
   return {
     defaultItems,
     getItems,
-    itemsMap
+    itemsMap,
+    deleteItem
   }
 })

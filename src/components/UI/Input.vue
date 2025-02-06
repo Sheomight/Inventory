@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<IInputProps>(), {
   placeholder: ''
 })
 
-const model = defineModel<string>({ required: true })
+const model = defineModel({ required: true })
 const inputEl = ref<HTMLInputElement | null>(null)
 
 const inputFocused = ref(false)

@@ -7,11 +7,13 @@ import InventoryItem from './InventoryItem.vue'
 import ItemModal from './ItemModal.vue'
 
 const inventorySize = ref({ width: 5, height: 5 })
+const { setItemPosition } = useItemsStore()
 const { itemsMap } = storeToRefs(useItemsStore())
 const inventoryEl = ref(null)
 
 const infoModal = ref(false)
 const itemToShow = ref<IItem | null>(null)
+const movingItemId = ref<string | null>(null)
 
 const showItem = (item: IItem) => {
   infoModal.value = true
@@ -31,13 +33,22 @@ const showItem = (item: IItem) => {
           v-for="(cell, cellIndex) in inventorySize.width"
           :key="cellIndex"
           class="inventory__cell"
+          @mouseup="
+            () => {
+              if (movingItemId) {
+                setItemPosition(movingItemId, row, cell)
+              }
+              movingItemId = null
+            }
+          "
         >
           <InventoryItem
             v-if="itemsMap[`${row}-${cell}`]"
             :key="itemsMap[`${row}-${cell}`].id"
             :color="itemsMap[`${row}-${cell}`].color"
             :quantity="itemsMap[`${row}-${cell}`].quantity"
-            @click="!itemToShow && showItem(itemsMap[`${row}-${cell}`])"
+            @mousedown.stop="movingItemId = itemsMap[`${row}-${cell}`].id"
+            @click.stop="!itemToShow && showItem(itemsMap[`${row}-${cell}`])"
           />
         </div>
       </div>

@@ -68,40 +68,50 @@ export const useItemsStore = defineStore('items', () => {
   const itemsMap = computed(() => {
     const map: Record<string, IItem> = {}
     getItems.value.forEach((item) => {
-      const key = `${item.position.row}-${item.position.cell}`
+      const key = `${item?.position.row}-${item?.position.cell}`
       map[key] = item
     })
     return map
   })
 
+  const setItems = (items: Array<IItem>) => {
+    localStorage.setItem('items', JSON.stringify(items))
+    itemsFromStorage.value = localStorage.getItem('items')
+  }
+
   const deleteItem = (itemId: string, quantity: number | null) => {
     const currentItemIndex = getItems.value.findIndex((item) => item.id === itemId)
     if (getItems.value[currentItemIndex]?.quantity === quantity) {
-      localStorage.setItem(
-        'items',
-        JSON.stringify(getItems.value.filter((item) => item.id !== itemId))
-      )
-      itemsFromStorage.value = localStorage.getItem('items')
+      setItems(getItems.value.filter((item) => item.id !== itemId))
     } else {
-      localStorage.setItem(
-        'items',
-        JSON.stringify(
-          getItems.value.map((item, index) => {
-            if (index === currentItemIndex && quantity !== null) {
-              item.quantity -= quantity
-            }
-            return item
-          })
-        )
+      setItems(
+        getItems.value.map((item, index) => {
+          if (index === currentItemIndex && quantity !== null) {
+            item.quantity -= quantity
+          }
+          return item
+        })
       )
-      itemsFromStorage.value = localStorage.getItem('items')
+    }
+  }
+
+  const setItemPosition = (itemId: string, row: number, cell: number) => {
+    if (!itemsMap.value[`${row}-${cell}`]) {
+      setItems(
+        getItems.value.map((item) => {
+          if (itemId === item.id) {
+            item.position.row = row
+            item.position.cell = cell
+          }
+          return item
+        })
+      )
     }
   }
 
   return {
-    defaultItems,
-    getItems,
     itemsMap,
-    deleteItem
+    deleteItem,
+    setItemPosition
   }
 })

@@ -2,17 +2,25 @@
 interface IButtonProps {
   color?: 'default' | 'warn'
   label?: string
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<IButtonProps>(), {
-  color: 'default'
+  color: 'default',
+  disabled: false
 })
 </script>
 
 <template>
   <button
     class="button flex align-center justify-center clickable"
-    :class="[`button_color-${props.color}`]"
+    :class="[
+      `button_color-${props.color}`,
+      {
+        button_disabled: props.disabled
+      }
+    ]"
+    :disabled="props.disabled"
   >
     <div v-if="props.label" class="button__label flex align-center text-semi-bold">
       <span>{{ props.label }}</span>
@@ -28,7 +36,7 @@ $b: '.button';
   width: var(--button-width, fit-content);
   border-radius: var(--border-radius-default);
   padding-block: 8px;
-  padding-inline: 28px;
+  padding-inline: 15px;
   font-family: var(--font-secondary);
   font-size: 14px;
   line-height: 130%;
@@ -41,6 +49,10 @@ $b: '.button';
   &_color-warn {
     color: var(--color-light);
     background: var(--color-warn);
+  }
+
+  &_disabled {
+    opacity: 0.4;
   }
 }
 </style>

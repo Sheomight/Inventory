@@ -5,6 +5,7 @@
 body {
   background-color: var(--color-dark);
   font-family: var(--font-primary);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .clickable {
@@ -26,4 +27,33 @@ body {
 
 .justify-center {
   justify-content: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.full-w {
+  width: 100%;
+}
+
+.full-h {
+  height: 100%;
 }

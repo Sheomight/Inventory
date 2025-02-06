@@ -32,6 +32,7 @@ $b: '.left-element';
   padding-inline: 14px;
   border: var(--border);
   border-radius: var(--border-radius-large);
+  background-color: var(--color-gray-1);
 
   &__img {
     overflow: hidden;

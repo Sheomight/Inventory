@@ -2,6 +2,7 @@
 import BottomElement from './components/BottomElement.vue'
 import Inventory from './components/Inventory.vue'
 import LeftElement from './components/LeftElement.vue'
+import ThemeSwitch from './components/UI/ThemeSwitch.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import LeftElement from './components/LeftElement.vue'
       <BottomElement class="main__element-bottom" />
     </div>
   </div>
+  <ThemeSwitch class="theme-switch" />
 </template>
 
 <style lang="scss" scoped>

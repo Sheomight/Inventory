@@ -45,6 +45,11 @@ const handleDelete = () => {
     handleClose()
   }
 }
+
+const cancelDelete = () => {
+  deletingCount.value = null
+  isDeleting.value = false
+}
 </script>
 
 <template>
@@ -85,7 +90,7 @@ const handleDelete = () => {
           label="Введите количество"
           :error="hasError"
         />
-        <Button class="flex-grow" label="Отмена" @click="isDeleting = false" />
+        <Button class="flex-grow" label="Отмена" @click="cancelDelete" />
         <Button
           class="flex-grow"
           label="Подтвердить"

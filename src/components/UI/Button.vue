@@ -42,13 +42,13 @@ $b: '.button';
   line-height: 130%;
 
   &_color-default {
-    color: var(--color-gray-2);
-    background: var(--color-light);
+    background: var(--button-bg-color);
+    color: var(--button-text-color);
   }
 
   &_color-warn {
-    color: var(--color-light);
-    background: var(--color-warn);
+    background: var(--button-bg-color-warn);
+    color: var(--button-text-color-warn);
   }
 
   &:not(#{$b}_disabled):hover,
